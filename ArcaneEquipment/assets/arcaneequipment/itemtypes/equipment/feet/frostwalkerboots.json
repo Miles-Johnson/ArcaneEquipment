@@ -1,0 +1,22 @@
+{
+    "code": "frostwalkerboots",
+    "class": "Item",
+    "maxstacksize": 1,
+    "clothescategory": "foot",
+    "behaviors": [
+        {
+            "name": "ArcanePassiveBehavior"
+        }
+    ],
+    "creativeinventory": {
+        "general": [
+            "arcaneequipment"
+        ]
+    },
+    "textures": {
+        "all": "game:block/ice"
+    },
+    "attributes": {
+        "durabilityLossPerUse": 0
+    }
+}

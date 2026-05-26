@@ -1,3 +1,5 @@
 {
-    "hello": "hello world!"
+    "hello": "hello world!",
+    "item-frostwalkerboots": "Frost Walker Boots",
+    "item-frostwalkerboots-desc": "Ancient boots that radiate cold, freezing water beneath your feet as you walk."
 }
