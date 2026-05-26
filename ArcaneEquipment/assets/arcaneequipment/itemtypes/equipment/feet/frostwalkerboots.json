@@ -10,11 +10,11 @@
     ],
     "creativeinventory": {
         "general": [
-            "arcaneequipment"
+            "*"
         ]
     },
     "textures": {
-        "all": "game:block/ice"
+        "all": { "base": "game:block/ice" }
     },
     "attributes": {
         "durabilityLossPerUse": 0
