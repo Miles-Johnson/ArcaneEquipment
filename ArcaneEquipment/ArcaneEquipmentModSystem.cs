@@ -1,26 +1,50 @@
-﻿using Vintagestory.API.Client;
-using Vintagestory.API.Server;
-using Vintagestory.API.Config;
+using ArcaneEquipment.Behaviors;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
+using Vintagestory.API.Server;
 
 namespace ArcaneEquipment;
 
 public class ArcaneEquipmentModSystem : ModSystem
 {
-    // Called on server and client
-    // Useful for registering block/entity classes on both sides
+    private ICoreServerAPI? sapi;
+
     public override void Start(ICoreAPI api)
     {
-        Mod.Logger.Notification("Hello from template mod: " + api.Side);
+        api.RegisterCollectibleBehaviorClass("ArcanePassiveBehavior", typeof(ArcanePassiveBehavior));
     }
 
     public override void StartServerSide(ICoreServerAPI api)
     {
-        Mod.Logger.Notification("Hello from template mod server side: " + Lang.Get("arcaneequipment:hello"));
+        sapi = api;
+        api.Event.Timer(() => OnServerPassiveTick(), 500);
     }
 
-    public override void StartClientSide(ICoreClientAPI api)
+    private void OnServerPassiveTick()
     {
-        Mod.Logger.Notification("Hello from template mod client side: " + Lang.Get("arcaneequipment:hello"));
+        if (sapi == null)
+        {
+            return;
+        }
+
+        foreach (IServerPlayer player in sapi.World.AllOnlinePlayers)
+        {
+            IInventory? inventory = player.InventoryManager.GetOwnInventory(GlobalConstants.characterInvClassName);
+            if (inventory == null)
+            {
+                continue;
+            }
+
+            foreach (ItemSlot slot in inventory)
+            {
+                ItemStack? stack = slot.Itemstack;
+                if (stack?.Collectible?.Code?.Domain == "arcaneequipment")
+                {
+                    sapi.Logger.Debug($"[ArcaneEquipment] Found arcaneequipment item '{stack.Collectible.Code}' on player '{player.PlayerName}'.");
+                }
+            }
+        }
+
+        sapi.Event.Timer(() => OnServerPassiveTick(), 500);
     }
 }
